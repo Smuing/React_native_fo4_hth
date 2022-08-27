@@ -9,7 +9,7 @@ import Footer from "./Footer";
 export default function Menu({ s }) {
   const navigation = useNavigation();
   return (
-    <SafeAreaView style={[s.container, { flex: 1 }]}>
+    <SafeAreaView style={[s.container, s.flex1]}>
       <View
         style={{
           flex: 9.5,
@@ -17,15 +17,13 @@ export default function Menu({ s }) {
       >
         <View
           style={[
-            {
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            },
+            s.flexRow,
+            s.alignItemsCenter,
+            s.justifyContentBetween,
             s.mb2,
           ]}
         >
-          <Text style={{ color: "black" }}>최근 검색 유저</Text>
+          <Text style={{ color: colors.Black }}>최근 검색 유저</Text>
           <TouchableOpacity
             onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}
           >
@@ -41,7 +39,7 @@ export default function Menu({ s }) {
                 s.listGroupItem,
                 s.listGroupItemFirstChild(true),
                 s.listGroupItemLastChild(true),
-                { alignItems: "center" },
+                s.alignItemsCenter,
               ]}
             >
               <Text style={[s.listGroupItemText]}>GALAHAD VS 런던토종닭</Text>
@@ -50,7 +48,7 @@ export default function Menu({ s }) {
         </View>
       </View>
       <View style={{ flex: 0.5 }}>
-        <Footer />
+        <Footer s={s} />
       </View>
     </SafeAreaView>
   );

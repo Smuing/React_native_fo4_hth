@@ -2,6 +2,7 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import colors from "./colors";
@@ -10,7 +11,6 @@ import Header from "./components/Header";
 import Search from "./components/Search";
 import Result from "./components/Result";
 import Intro from "./components/Intro";
-import { View } from "react-native";
 import Footer from "./components/Footer";
 
 const constants = {
@@ -27,7 +27,7 @@ const { s, c } = bootstrapStyleSheet;
 
 function HomeScreen() {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.White }}>
+    <SafeAreaView style={[s.flex1, { backgroundColor: colors.White }]}>
       <View style={{ flex: 9.5 }}>
         <Header />
         <Search s={s} />
@@ -35,7 +35,7 @@ function HomeScreen() {
         {/* <Intro s={s} /> */}
       </View>
       <View style={{ flex: 0.5 }}>
-        <Footer />
+        <Footer s={s} />
       </View>
     </SafeAreaView>
   );

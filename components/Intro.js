@@ -1,15 +1,15 @@
 import * as React from "react";
 import { Image, Text, View } from "react-native";
-import colors from "../colors";
 
 export default function Intro({ s }) {
   return (
     <View
-      style={{
-        paddingHorizontal: 10,
-        flex: 1,
-        alignItems: "center",
-      }}
+      style={[
+        s.alignItemsCenter,
+        {
+          paddingHorizontal: 10,
+        },
+      ]}
     >
       <View style={[s.alert, s.alertWarning]}>
         <Text style={[s.alertText, s.alertWarningText]}>

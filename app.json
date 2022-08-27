@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "fo4_hth",
-    "slug": "fo4_hth",
+    "name": "야 뭐 돼?ㅣ피파온라인4 상대 전적",
+    "description": "피파온라인4 상대 전적 검색. 친구들과의 상대 전적, 피파 BJ들의 상대 전적을 검색해 보세요.",
+    "slug": "fo4hth",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
