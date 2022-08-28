@@ -1,36 +1,26 @@
 import * as React from "react";
 import {
   ActivityIndicator,
-  Dimensions,
-  InputAccessoryView,
   Text,
   TextInput,
   TouchableHighlight,
   TouchableOpacity,
   View,
-  Platform,
-  Keyboard,
 } from "react-native";
 import Checkbox from "expo-checkbox";
-import { Entypo } from "@expo/vector-icons";
 import colors from "../colors";
 
-export default function Search({ s }) {
-  const firstInputRef = React.useRef();
-  const secondInputRef = React.useRef();
-  const [focus, setFocus] = React.useState(true);
-  const [abnormalChecked, setAbnormalChecked] = React.useState(false);
-
+export default function Search({ props }) {
+  const {
+    s,
+    firstInputRef,
+    secondInputRef,
+    setFocus,
+    abnormalChecked,
+    setAbnormalChecked,
+  } = props;
   return (
-    <View
-      style={[
-        s.alignItemsCenter,
-        s.pb4,
-        {
-          paddingHorizontal: 12,
-        },
-      ]}
-    >
+    <View style={[s.container, s.alignItemsCenter, s.pb4]}>
       <TextInput
         placeholder="구단주명"
         style={[s.formControl, s.mb1]}
@@ -50,69 +40,6 @@ export default function Search({ s }) {
           setFocus(false);
         }}
       />
-      {Platform.OS === "ios" && (
-        <InputAccessoryView nativeID="UpDownDone">
-          <View
-            style={[
-              s.flexRow,
-              s.justifyContentBetween,
-              s.alignItemsCenter,
-              {
-                width: Dimensions.get("window").width,
-                height: 44,
-                backgroundColor: "#F8F8F8",
-                borderTopWidth: 0.3,
-                borderColor: "#adadad",
-                paddingHorizontal: 16,
-              },
-            ]}
-          >
-            <View style={[s.flexRow]}>
-              <TouchableOpacity
-                onPress={() => {
-                  firstInputRef.current.focus();
-                }}
-                style={{ marginRight: 14 }}
-                disabled={focus}
-              >
-                <Entypo
-                  name="chevron-thin-up"
-                  size={24}
-                  color={focus ? "#bfbfbf" : colors.Primary}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  secondInputRef.current.focus();
-                }}
-                disabled={!focus}
-              >
-                <Entypo
-                  name="chevron-thin-down"
-                  size={24}
-                  color={focus ? colors.Primary : "#bfbfbf"}
-                />
-              </TouchableOpacity>
-            </View>
-
-            <TouchableOpacity
-              onPress={() => {
-                Keyboard.dismiss();
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: "500",
-                  color: colors.Primary,
-                }}
-              >
-                완료
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </InputAccessoryView>
-      )}
 
       <View style={[s.w100, s.flexRow, s.alignItemsCenter]}>
         <Checkbox
@@ -126,7 +53,17 @@ export default function Search({ s }) {
         </TouchableOpacity>
       </View>
       <TouchableHighlight
-        onPress={() => {}}
+        onPress={async () => {
+          const response = await fetch(
+            `https://fo4-hth-api.herokuapp.com/matchids?first=나인범&second=galahad`,
+            {
+              headers: {
+                Origin: "fo4hth://",
+              },
+            }
+          );
+          const json = await response.json();
+        }}
         style={[s.btnTouchable, s.w100, s.mt3]}
       >
         <View
