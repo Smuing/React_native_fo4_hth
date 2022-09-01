@@ -53,11 +53,6 @@ function HomeScreen() {
   const [errorMs, setErrorMs] = React.useState("");
   const [firstNick, setFirstNick] = React.useState("");
   const [secondNick, setSecondNick] = React.useState("");
-  const [resFirstNick, setResFirstNick] = React.useState("");
-  const [resSecondNick, setResSecondNick] = React.useState("");
-  const [offset, setOffset] = React.useState(0);
-  const [accessIds, setAccessIds] = React.useState([]);
-  const [matchIds, setMatchIds] = React.useState([]);
   const [totalData, setTotalData] = React.useState({});
   async function search() {
     if (
@@ -74,11 +69,11 @@ function HomeScreen() {
       setSearching(true);
       setCanceling(false);
       setError(false);
-      setResFirstNick("");
-      setResSecondNick("");
-      setAccessIds([]);
-      setMatchIds([]);
-      console.log(matchIds, accessIds);
+      let resFirstNick = "";
+      let resSecondNick = "";
+      let accessIds = [];
+      let matchIds = [];
+      let offset = 0;
       abortController.current = new AbortController();
 
       const response = await fetch(
@@ -119,18 +114,16 @@ function HomeScreen() {
         setErrorMs("경기를 찾을 수 없습니다.");
       } else {
         if (response !== undefined) {
-          setResFirstNick(response.userInfo.nickname[0]);
-          setResSecondNick(response.userInfo.nickname[1]);
-          setAccessIds([...response.userInfo.accessIds]);
-          setMatchIds(
-            [...response.matchIds].filter((e, i, a) => a.indexOf(e) !== i)
-          );
-          console.log(secondNick, matchIds);
+          resFirstNick = response.userInfo.nickname[0];
+          resSecondNick = response.userInfo.nickname[1];
+          accessIds.push(...response.userInfo.accessIds);
+          matchIds.push(...response.matchIds);
+          matchIds = matchIds.filter((e, i, a) => a.indexOf(e) !== i);
         }
       }
       if (matchIds.length !== 0) {
         abortController.current = new AbortController();
-        setMatchIds([...matchIds].slice(offset));
+        matchIds = matchIds.slice(offset);
 
         const result = await fetch(
           `${API_URL}/matchdetail?accessIds=${accessIds}&matchIds=${matchIds}&abnormalGame=${abnormalChecked}`,
@@ -154,7 +147,7 @@ function HomeScreen() {
           setErrorMs("같이 플레이한 경기를 찾을 수 없습니다.");
         } else {
           console.log(result);
-          setOffset(result.offset + 1);
+          offset = result.offset + 1;
         }
       } else {
         setError(true);
