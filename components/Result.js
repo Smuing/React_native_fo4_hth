@@ -2,7 +2,7 @@ import * as React from "react";
 import { ScrollView, Text, TouchableHighlight, View } from "react-native";
 
 export default function Result({ props }) {
-  const { s, c, error, errorMs } = props;
+  const { s, c, error, errorMs, matchData } = props;
 
   const custom = {
     card: {
@@ -99,6 +99,23 @@ export default function Result({ props }) {
             </View>
           </View>
           <View style={[s.listGroup, s.flex1]}>
+            {matchData.length === 0
+              ? ""
+              : matchData.map((match) => (
+                  <TouchableHighlight
+                    onPress={() => {}}
+                    underlayColor="#e9ecef"
+                    style={[s.listGroupItem, s.listGroupItemFirstChild(true)]}
+                    key={match.id}
+                  >
+                    <View>
+                      <Text style={[custom.dateText, s.textMuted, s.mb1]}>
+                        {match.id}
+                      </Text>
+                    </View>
+                  </TouchableHighlight>
+                ))}
+
             <TouchableHighlight
               onPress={() => {}}
               underlayColor="#e9ecef"

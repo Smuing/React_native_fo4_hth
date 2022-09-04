@@ -54,6 +54,7 @@ function HomeScreen() {
   const [firstNick, setFirstNick] = React.useState("");
   const [secondNick, setSecondNick] = React.useState("");
   const [totalData, setTotalData] = React.useState({});
+  const [matchData, setMatchData] = React.useState([]);
   async function search() {
     if (
       firstNick.replace(/(\s*)/g, "") === "" ||
@@ -148,6 +149,7 @@ function HomeScreen() {
         } else {
           console.log(result);
           offset = result.offset + 1;
+          setMatchData(result.matchData);
         }
       } else {
         setError(true);
@@ -195,7 +197,7 @@ function HomeScreen() {
             }}
           />
           {doSearch ? (
-            <Result props={{ s, c, error, errorMs }} />
+            <Result props={{ s, c, error, errorMs, matchData }} />
           ) : (
             <Intro s={s} />
           )}
