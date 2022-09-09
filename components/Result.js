@@ -1,8 +1,9 @@
 import * as React from "react";
 import { ScrollView, Text, TouchableHighlight, View } from "react-native";
+import { dateFormat } from "../hooks";
 
 export default function Result({ props }) {
-  const { s, c, error, errorMs, matchData } = props;
+  const { s, c, error, errorMs, nick, matchData } = props;
 
   const custom = {
     card: {
@@ -101,77 +102,51 @@ export default function Result({ props }) {
           <View style={[s.listGroup, s.flex1]}>
             {matchData.length === 0
               ? ""
-              : matchData.map((match) => (
+              : matchData.map((match, i) => (
                   <TouchableHighlight
                     onPress={() => {}}
                     underlayColor="#e9ecef"
-                    style={[s.listGroupItem, s.listGroupItemFirstChild(true)]}
+                    style={[
+                      s.listGroupItem,
+                      i == 0
+                        ? s.listGroupItemFirstChild(true)
+                        : i == matchData.length - 1
+                        ? s.listGroupItemLastChild(true)
+                        : {},
+                    ]}
                     key={match.id}
                   >
                     <View>
                       <Text style={[custom.dateText, s.textMuted, s.mb1]}>
-                        {match.id}
+                        {dateFormat(new Date(match.date))}
                       </Text>
+                      <View style={[s.flex1, s.flexRow]}>
+                        <Text style={[s.text, s.flex1, s.textRight]}>
+                          {nick[0]}
+                        </Text>
+                        <View style={[s.flex1]}>
+                          <Text style={[s.h4, s.textCenter]}>
+                            {match.firstGoal} - {match.secondGoal}
+                          </Text>
+                          {match.shootOut && (
+                            <Text style={[s.textSmall, s.textCenter]}>
+                              (Pen {match.firstShootOutGoal} -{" "}
+                              {match.secondShootOutGoal})
+                            </Text>
+                          )}
+                          {match.abnormalEnd && (
+                            <Text style={[s.textSmall, s.textCenter]}>
+                              몰수패
+                            </Text>
+                          )}
+                        </View>
+                        <Text style={[s.text, s.flex1, s.textLeft]}>
+                          {nick[1]}
+                        </Text>
+                      </View>
                     </View>
                   </TouchableHighlight>
                 ))}
-
-            <TouchableHighlight
-              onPress={() => {}}
-              underlayColor="#e9ecef"
-              style={[s.listGroupItem, s.listGroupItemFirstChild(true)]}
-            >
-              <View>
-                <Text style={[custom.dateText, s.textMuted, s.mb1]}>
-                  2022년 08월 27일 00:07
-                </Text>
-                <View style={[s.flex1, s.flexRow]}>
-                  <Text style={[s.text, s.flex1, s.textRight]}>GALAHAD</Text>
-                  <View style={[s.flex1]}>
-                    <Text style={[s.h4, s.textCenter]}>1 - 0</Text>
-                  </View>
-                  <Text style={[s.text, s.flex1, s.textLeft]}>런던토종닭</Text>
-                </View>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight
-              onPress={() => {}}
-              underlayColor="#e9ecef"
-              style={[s.listGroupItem]}
-            >
-              <View>
-                <Text style={[custom.dateText, s.textMuted, s.mb1]}>
-                  2022년 08월 27일 00:07
-                </Text>
-                <View style={[s.flex1, s.flexRow]}>
-                  <Text style={[s.text, s.flex1, s.textRight]}>GALAHAD</Text>
-                  <View style={[s.flex1]}>
-                    <Text style={[s.h4, s.textCenter]}>1 - 0</Text>
-                    <Text style={[s.textSmall, s.textCenter]}>(Pen 3 - 4)</Text>
-                  </View>
-                  <Text style={[s.text, s.flex1, s.textLeft]}>런던토종닭</Text>
-                </View>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight
-              onPress={() => {}}
-              underlayColor="#e9ecef"
-              style={[s.listGroupItem, s.listGroupItemLastChild(true)]}
-            >
-              <View>
-                <Text style={[custom.dateText, s.textMuted, s.mb1]}>
-                  2022년 08월 27일 00:07
-                </Text>
-                <View style={[s.flex1, s.flexRow]}>
-                  <Text style={[s.text, s.flex1, s.textRight]}>GALAHAD</Text>
-                  <View style={[s.flex1]}>
-                    <Text style={[s.h4, s.textCenter]}>1 - 0</Text>
-                    <Text style={[s.textSmall, s.textCenter]}>몰수패</Text>
-                  </View>
-                  <Text style={[s.text, s.flex1, s.textLeft]}>런던토종닭</Text>
-                </View>
-              </View>
-            </TouchableHighlight>
             <TouchableHighlight
               onPress={async () => {
                 // const response = await fetch(

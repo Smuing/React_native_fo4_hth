@@ -53,6 +53,8 @@ function HomeScreen() {
   const [errorMs, setErrorMs] = React.useState("");
   const [firstNick, setFirstNick] = React.useState("");
   const [secondNick, setSecondNick] = React.useState("");
+  const [resFirstNick, setResFirstNick] = React.useState("");
+  const [resSecondNick, setResSecondNick] = React.useState("");
   const [totalData, setTotalData] = React.useState({});
   const [matchData, setMatchData] = React.useState([]);
   async function search() {
@@ -70,8 +72,7 @@ function HomeScreen() {
       setSearching(true);
       setCanceling(false);
       setError(false);
-      let resFirstNick = "";
-      let resSecondNick = "";
+      setMatchData([]);
       let accessIds = [];
       let matchIds = [];
       let offset = 0;
@@ -89,7 +90,7 @@ function HomeScreen() {
       )
         .then((res) => res.json())
         .catch((error) => {
-          if (error.message != "The user aborted a request.") {
+          if (error.name != "AbortError") {
             setError(true);
             setErrorMs("검색 시간이 초과되었습니다.");
           }
@@ -115,8 +116,8 @@ function HomeScreen() {
         setErrorMs("경기를 찾을 수 없습니다.");
       } else {
         if (response !== undefined) {
-          resFirstNick = response.userInfo.nickname[0];
-          resSecondNick = response.userInfo.nickname[1];
+          setResFirstNick(response.userInfo.nickname[0]);
+          setResSecondNick(response.userInfo.nickname[1]);
           accessIds.push(...response.userInfo.accessIds);
           matchIds.push(...response.matchIds);
           matchIds = matchIds.filter((e, i, a) => a.indexOf(e) !== i);
@@ -138,7 +139,7 @@ function HomeScreen() {
         )
           .then((res) => res.json())
           .catch((error) => {
-            if (error.message != "The user aborted a request.") {
+            if (error.name != "AbortError") {
               setError(true);
               setErrorMs("검색 시간이 초과되었습니다.");
             }
@@ -149,7 +150,7 @@ function HomeScreen() {
         } else {
           console.log(result);
           offset = result.offset + 1;
-          setMatchData(result.matchData);
+          setMatchData((matchData) => [...matchData, ...result.matchData]);
         }
       } else {
         setError(true);
@@ -197,7 +198,16 @@ function HomeScreen() {
             }}
           />
           {doSearch ? (
-            <Result props={{ s, c, error, errorMs, matchData }} />
+            <Result
+              props={{
+                s,
+                c,
+                error,
+                errorMs,
+                nick: [resFirstNick, resSecondNick],
+                matchData,
+              }}
+            />
           ) : (
             <Intro s={s} />
           )}
