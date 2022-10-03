@@ -3,7 +3,7 @@ import { ScrollView, Text, TouchableHighlight, View } from "react-native";
 import { dateFormat } from "../hooks";
 
 export default function Result({ props }) {
-  const { s, c, error, errorMs, nick, matchData } = props;
+  const { s, c, error, errorMs, nick, matchData, totalData } = props;
 
   const custom = {
     card: {
@@ -41,9 +41,11 @@ export default function Result({ props }) {
                   s.justifyContentBetween,
                 ]}
               >
-                <Text style={[s.text]}>GALAHAD</Text>
-                <Text style={[s.textSmall, s.textMuted]}>총 10경기</Text>
-                <Text style={[s.text]}>런던토종닭</Text>
+                <Text style={[s.text]}>{nick[0]}</Text>
+                <Text style={[s.textSmall, s.textMuted]}>
+                  총 {totalData.totalMatch}경기
+                </Text>
+                <Text style={[s.text]}>{nick[1]}</Text>
               </View>
               <View style={[s.progress, s.flexRow, s.mb2]}>
                 <View style={[s.progressBar, { flex: 60.0 }]} />
@@ -57,7 +59,9 @@ export default function Result({ props }) {
                       style={[s.btnTouchable]}
                     >
                       <View style={[s.btn, s.btnPrimary]}>
-                        <Text style={[s.btnText, s.btnPrimaryText]}>6</Text>
+                        <Text style={[s.btnText, s.btnPrimaryText]}>
+                          {totalData.totalResult[0]}
+                        </Text>
                       </View>
                     </TouchableHighlight>
                   </View>
@@ -67,7 +71,9 @@ export default function Result({ props }) {
                       style={[s.btnTouchable]}
                     >
                       <View style={[s.btn, s.btnSecondary]}>
-                        <Text style={[s.btnText, s.btnSecondaryText]}>0</Text>
+                        <Text style={[s.btnText, s.btnSecondaryText]}>
+                          {totalData.totalResult[1]}
+                        </Text>
                       </View>
                     </TouchableHighlight>
                   </View>
@@ -77,23 +83,31 @@ export default function Result({ props }) {
                       style={[s.btnTouchable]}
                     >
                       <View style={[s.btn, s.btnDanger]}>
-                        <Text style={[s.btnText, s.btnDangerText]}>4</Text>
+                        <Text style={[s.btnText, s.btnDangerText]}>
+                          {totalData.totalResult[2]}
+                        </Text>
                       </View>
                     </TouchableHighlight>
                   </View>
                 </View>
                 <View style={[s.flexRow, s.justifyContentBetween]}>
                   <View>
-                    <Text style={[s.textSmall, s.textMuted]}>GALAHAD</Text>
-                    <Text style={[s.textSmall, s.textMuted]}>40.0%</Text>
+                    <Text style={[s.textSmall, s.textMuted]}>{nick[0]}</Text>
+                    <Text style={[s.textSmall, s.textMuted]}>
+                      {totalData.totalPer[0]}%
+                    </Text>
                   </View>
                   <View style={[s.alignItemsCenter]}>
                     <Text style={[s.textSmall, s.textMuted]}>무승부</Text>
-                    <Text style={[s.textSmall, s.textMuted]}>0.0%</Text>
+                    <Text style={[s.textSmall, s.textMuted]}>
+                      {totalData.totalPer[1]}%
+                    </Text>
                   </View>
                   <View style={[s.alignItemsEnd]}>
-                    <Text style={[s.textSmall, s.textMuted]}>런던토종닭</Text>
-                    <Text style={[s.textSmall, s.textMuted]}>40.0%</Text>
+                    <Text style={[s.textSmall, s.textMuted]}>{nick[1]}</Text>
+                    <Text style={[s.textSmall, s.textMuted]}>
+                      {totalData.totalPer[2]}%
+                    </Text>
                   </View>
                 </View>
               </View>

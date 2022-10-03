@@ -55,7 +55,11 @@ function HomeScreen() {
   const [secondNick, setSecondNick] = React.useState("");
   const [resFirstNick, setResFirstNick] = React.useState("");
   const [resSecondNick, setResSecondNick] = React.useState("");
-  const [totalData, setTotalData] = React.useState({});
+  const [totalData, setTotalData] = React.useState({
+    totalMatch: 0,
+    totalResult: [0, 0, 0],
+    totalPer: [0, 0, 0],
+  });
   const [matchData, setMatchData] = React.useState([]);
   async function search() {
     if (
@@ -73,6 +77,11 @@ function HomeScreen() {
       setCanceling(false);
       setError(false);
       setMatchData([]);
+      setTotalData({
+        totalMatch: 0,
+        totalResult: [0, 0, 0],
+        totalPer: [0, 0, 0],
+      });
       let accessIds = [];
       let matchIds = [];
       let offset = 0;
@@ -151,6 +160,39 @@ function HomeScreen() {
           console.log(result);
           offset = result.offset + 1;
           setMatchData((matchData) => [...matchData, ...result.matchData]);
+          setTotalData((totalData) => {
+            console.log(
+              totalData.totalResult[0] + result.totalData.totalResult[0]
+            );
+            return {
+              totalMatch: (totalData.totalMatch += result.totalData.totalMatch),
+              totalResult: [
+                (totalData.totalResult[0] += result.totalData.totalResult[0]),
+                (totalData.totalResult[1] += result.totalData.totalResult[1]),
+                (totalData.totalResult[2] += result.totalData.totalResult[2]),
+              ],
+              totalPer: [
+                (
+                  ((totalData.totalResult[0] +
+                    result.totalData.totalResult[0]) /
+                    (totalData.totalMatch + result.totalData.totalMatch)) *
+                  100
+                ).toFixed(1),
+                (
+                  ((totalData.totalResult[1] +
+                    result.totalData.totalResult[1]) /
+                    (totalData.totalMatch + result.totalData.totalMatch)) *
+                  100
+                ).toFixed(1),
+                (
+                  ((totalData.totalResult[2] +
+                    result.totalData.totalResult[2]) /
+                    (totalData.totalMatch + result.totalData.totalMatch)) *
+                  100
+                ).toFixed(1),
+              ],
+            };
+          });
         }
       } else {
         setError(true);
@@ -206,6 +248,7 @@ function HomeScreen() {
                 errorMs,
                 nick: [resFirstNick, resSecondNick],
                 matchData,
+                totalData,
               }}
             />
           ) : (
